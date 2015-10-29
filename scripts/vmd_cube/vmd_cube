@@ -124,14 +124,9 @@ def find_vmd(options):
         vmdpath = environ['VMDPATH']
         vmdpath = multigsub.multigsub({" " : r"\ "},vmdpath)
         options["VMDPATH"][0] = vmdpath
-
-
-def print_build_help(build_path):
-    print('   configure step is done')
-    print('   now you need to compile the sources:')
-    print('   >>> cd ' + build_path + '/src')
-    print('   >>> make')
-
+    else:
+        print "Please set the VMDPATH environmental variable to the path of VMD."
+        exit(1)
 
 def save_setup_command(argv):
     file_name = join(default_path, 'vmd_cube_command')

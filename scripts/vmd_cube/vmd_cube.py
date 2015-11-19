@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Francesco Evangelista
+# Emory University
+
 import argparse
 import sys
 import re
@@ -9,6 +12,9 @@ import datetime
 
 from os import listdir, environ
 from os.path import isfile, join
+
+vmd_cube_help = """vmd_cube is a script to render cube files with vmd.
+To generate cube files with Psi4 add the command cubeprop() at the end of your input file."""
 
 vmd_exe = ""
 
@@ -143,7 +149,7 @@ def save_setup_command(argv):
 
 
 def read_options(options):
-    parser = argparse.ArgumentParser(description='Read script options.')
+    parser = argparse.ArgumentParser(description=vmd_cube_help)
     parser.add_argument('data', metavar='<cubefile dir>', type=str, nargs='?',default=".",
                    help='The directory containing the cube files.')
                    
@@ -175,8 +181,6 @@ def read_options(options):
                    help='call montage to combine images. (string, default = false)')
 
     args = parser.parse_args()
-    
-    print args
 
     options["CUBEDIR"][0] = str(args.data)
     options["SURF1ID"][0] = str(args.color1)
@@ -192,10 +196,9 @@ def read_options(options):
     options["SCALE"][0] = str(args.scale)
     options["MONTAGE"][0] = str(args.montage)
 
-    print "\nParameters:"
+    print "Parameters:"
     for k,v in options.iteritems():
         print "  %-20s %s" % (v[1],v[0])
-    print "\n"
 
 
 def find_cubes(options):
@@ -231,8 +234,8 @@ def write_and_run_vmd_script(options,cube_files):
     vmd_script.close()
 
     # Call VMD
-    print options["VMDPATH"][0]
-    subprocess.call(("%s -dispdev text -e %s" % (options["VMDPATH"][0],vmd_script_name)), shell=True)
+    FNULL = open(os.devnull, 'w')
+    subprocess.call(("%s -dispdev text -e %s" % (options["VMDPATH"][0],vmd_script_name)),stdout=FNULL, shell=True)
 
 
 def call_montage(options,cube_files):
@@ -255,8 +258,12 @@ def call_montage(options,cube_files):
                 if "Phi" in f:
                     basis_functions.append(tga_file)
 
+            # Sort the MOs
+            alpha_mos_num = ["Psi_a_%d.tga" % k for k in sorted([int(s[6:-4]) for s in alpha_mos])]
+            beta_mos_num = ["Psi_a_%d.tga" % k for k in sorted([int(s[6:-4]) for s in beta_mos])]
+
             if len(alpha_mos) > 0:
-                subprocess.call(("%s %s -geometry +2+2 AlphaMOs.tga" % (montage_exe," ".join(alpha_mos))), shell=True)
+                subprocess.call(("%s %s -geometry +2+2 AlphaMOs.tga" % (montage_exe," ".join(alpha_mos_num))), shell=True)
             if len(beta_mos) > 0:
                 subprocess.call(("%s %s -geometry +2+2 BetaMOs.tga" % (montage_exe," ".join(beta_mos))), shell=True)
             if len(densities) > 0:
@@ -270,7 +277,7 @@ def main(argv):
     read_options(options)
     save_setup_command(argv)
     cube_files = find_cubes(options)
-#    write_and_run_vmd_script(options,cube_files)
+    write_and_run_vmd_script(options,cube_files)
     call_montage(options,cube_files)
 
 

@@ -38,10 +38,12 @@ material change opacity Opaque 1.000000
 material change outline Opaque 0.000000
 material change outlinewidth Opaque 0.000000
 material change transmode Opaque 0.000000
+material change specular Opaque 0.750000
+
 material change ambient EdgyShiny 0.310000
 material change diffuse EdgyShiny 0.720000
-material change specular Opaque 0.750000
 material change shininess EdgyShiny 1.0000
+material change opacity EdgyShiny PARAM_OPACITY
 
 # Customize atom colors
 color Element C silver
@@ -98,8 +100,8 @@ options = {"SURF1ID"    : [None,"Surface1 Color Id"],
            "TX"         : [None,"X-axis Translation"],
            "TY"         : [None,"Y-axis Translation"],
            "TZ"         : [None,"Z-axis Translation"],
+           "OPACITY"    : [None,"Opacity"],
            "CUBEDIR"    : [None,"Cubefile Directory"],
-           "FILENAME"   : ["mo","Filename"],
            "SCALE"      : [None,"Scaling Factor"],
            "MONTAGE"    : [None,"Montage"],
            "VMDPATH"    : [None,"VMD Path"]}
@@ -175,6 +177,9 @@ def read_options(options):
     parser.add_argument('--tz', metavar='<angle>', type=float, nargs='?',default=0.0,
                    help='the z-axis translation (float, default = 0.0)')
 
+    parser.add_argument('--opacity', metavar='<opacity>', type=float, nargs='?',default=1.0,
+                   help='opacity of the isosurface (float, default = 1.0)')
+
     parser.add_argument('--scale', metavar='<factor>', type=float, nargs='?',default=1.0,
                    help='the scaling factor (float, default = 1.0)')
     parser.add_argument('--montage', const=True, default=False, nargs='?',
@@ -193,6 +198,7 @@ def read_options(options):
     options["TX"][0] = str(args.tx)
     options["TY"][0] = str(args.ty)
     options["TZ"][0] = str(args.tz)
+    options["OPACITY"][0] = str(args.opacity)
     options["SCALE"][0] = str(args.scale)
     options["MONTAGE"][0] = str(args.montage)
 

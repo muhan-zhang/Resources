@@ -104,6 +104,8 @@ options = {"SURF1ID"    : [None,"Surface1 Color Id"],
            "CUBEDIR"    : [None,"Cubefile Directory"],
            "SCALE"      : [None,"Scaling Factor"],
            "MONTAGE"    : [None,"Montage"],
+           "FONTSIZE"   : [None,"Font size"],
+           "IMAGESIZE"  : [None,"Image size"],
            "VMDPATH"    : [None,"VMD Path"]}
 
 
@@ -185,6 +187,12 @@ def read_options(options):
     parser.add_argument('--montage', const=True, default=False, nargs='?',
                    help='call montage to combine images. (string, default = false)')
 
+    parser.add_argument('--imagesize', metavar='<integer>', type=int, nargs='?',default=250,
+                   help='the size of each image (integer, default = 250)')
+    parser.add_argument('--fontsize', metavar='<integer>', type=int, nargs='?',default=20,
+                   help='the font size (integer, default = 20)')
+
+
     args = parser.parse_args()
 
     options["CUBEDIR"][0] = str(args.data)
@@ -201,6 +209,8 @@ def read_options(options):
     options["OPACITY"][0] = str(args.opacity)
     options["SCALE"][0] = str(args.scale)
     options["MONTAGE"][0] = str(args.montage)
+    options["FONTSIZE"][0] = str(args.fontsize)
+    options["IMAGESIZE"][0] = str(args.imagesize)
 
     print "Parameters:"
     for k,v in options.iteritems():
@@ -265,13 +275,25 @@ def call_montage(options,cube_files):
                     basis_functions.append(tga_file)
 
             # Sort the MOs
-            alpha_mos_num = ["Psi_a_%d.tga" % k for k in sorted([int(s[6:-4]) for s in alpha_mos])]
-            beta_mos_num = ["Psi_a_%d.tga" % k for k in sorted([int(s[6:-4]) for s in beta_mos])]
-
+            sorted_mos = []
+            for set in [alpha_mos,beta_mos]:
+                sorted_set = []
+                for s in set:
+                    s_split = s.split('_')
+                    sorted_set.append((int(s_split[2]),"Psi_a_%s_%s" % (s_split[2],s_split[3])))
+                sorted_set = sorted(sorted_set)
+                sorted_mos.append([s[1] for s in sorted_set])
+                    
+            for f in sorted_mos[0]:
+                f_split = f.split('_')
+                label = "%s\ \(%s\)" % (f_split[3][:-4],f_split[2])
+                subprocess.call(("montage -pointsize %s -label %s %s -geometry '%sx%s+0+0>' %s" %
+                    (options["FONTSIZE"][0],label,f,options["IMAGESIZE"][0],options["IMAGESIZE"][0],f)), shell=True)
+            
             if len(alpha_mos) > 0:
-                subprocess.call(("%s %s -geometry +2+2 AlphaMOs.tga" % (montage_exe," ".join(alpha_mos_num))), shell=True)
+                subprocess.call(("%s %s -geometry +2+2 AlphaMOs.tga" % (montage_exe," ".join(sorted_mos[0]))), shell=True)
             if len(beta_mos) > 0:
-                subprocess.call(("%s %s -geometry +2+2 BetaMOs.tga" % (montage_exe," ".join(beta_mos))), shell=True)
+                subprocess.call(("%s %s -geometry +2+2 BetaMOs.tga" % (montage_exe," ".join(sorted_mos[1]))), shell=True)
             if len(densities) > 0:
                 subprocess.call(("%s %s -geometry +2+2 Densities.tga" % (montage_exe," ".join(densities))), shell=True)
             if len(basis_functions) > 0:

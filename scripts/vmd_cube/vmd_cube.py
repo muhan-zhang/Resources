@@ -284,12 +284,14 @@ def call_montage(options,cube_files):
                 sorted_set = sorted(sorted_set)
                 sorted_mos.append([s[1] for s in sorted_set])
                     
+            # Add labels
             for f in sorted_mos[0]:
                 f_split = f.split('_')
                 label = "%s\ \(%s\)" % (f_split[3][:-4],f_split[2])
                 subprocess.call(("montage -pointsize %s -label %s %s -geometry '%sx%s+0+0>' %s" %
                     (options["FONTSIZE"][0],label,f,options["IMAGESIZE"][0],options["IMAGESIZE"][0],f)), shell=True)
-            
+
+            # Combine together in one image
             if len(alpha_mos) > 0:
                 subprocess.call(("%s %s -geometry +2+2 AlphaMOs.tga" % (montage_exe," ".join(sorted_mos[0]))), shell=True)
             if len(beta_mos) > 0:

@@ -283,6 +283,8 @@ def call_montage(options,cube_files):
                     sorted_set.append((int(s_split[2]),"Psi_a_%s_%s" % (s_split[2],s_split[3])))
                 sorted_set = sorted(sorted_set)
                 sorted_mos.append([s[1] for s in sorted_set])
+           
+            os.chdir(options["CUBEDIR"][0])
                     
             # Add labels
             for f in sorted_mos[0]:

@@ -9,6 +9,8 @@ set cc = llvm-gcc                          # <- C compiler
 set cxx = llvm-g++                         # <- C++ compiler
 set psi4type = debug                       # <- debug, release, or profile
 set maxameri = 5                           # <- 5 for cc-pV5Z, 6 for cc-pV6Z 
+set chemps2 = off                          # <- enable/disable chemps2
+set ambit = on                             # <- enable/disable ambit
 
 # define object and prefix dirs
 set objdir = $srcdir-obj-$psi4type
@@ -24,6 +26,7 @@ $srcdir/setup \
 --cxx11=on \
 --plugins=on \
 --accelerate \
---chemps2 off \
+--chemps2 $chemps2 \
+--ambit $ambit \
 --max-am-eri=$maxameri \
 $objdir

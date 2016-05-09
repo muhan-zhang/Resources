@@ -75,7 +75,14 @@ mol representation Isosurface PARAM_ISOVALUE2 0 0 0 1 1
 mol selection all
 mol material EdgyShiny
 mol addrep PARAM_CUBENUM
+"""
 
+vmd_template_interactive = """#
+# Disable rendering
+mol off PARAM_CUBENUM
+"""
+
+vmd_template_render = """
 # Render
 render TachyonInternal PARAM_CUBEFILE.tga
 mol delete PARAM_CUBENUM
@@ -106,7 +113,9 @@ options = {"SURF1ID"    : [None,"Surface1 Color Id"],
            "MONTAGE"    : [None,"Montage"],
            "FONTSIZE"   : [None,"Font size"],
            "IMAGESIZE"  : [None,"Image size"],
-           "VMDPATH"    : [None,"VMD Path"]}
+           "VMDPATH"    : [None,"VMD Path"],
+           "INTERACTIVE": [None,"Interactive Mode"],
+           "GZIP"       : [None,"Gzip Cube Files"]}
 
 
 def which(program):
@@ -192,6 +201,12 @@ def read_options(options):
     parser.add_argument('--fontsize', metavar='<integer>', type=int, nargs='?',default=20,
                    help='the font size (integer, default = 20)')
 
+    parser.add_argument('--interactive', metavar='', const=True, default=False, nargs='?',
+                   help='run in interactive mode (default = false)')
+
+    parser.add_argument('--gzip', metavar='', const=True, default=False, nargs='?',
+                   help='gzip cube files (default = false)')
+
 
     args = parser.parse_args()
 
@@ -211,6 +226,8 @@ def read_options(options):
     options["MONTAGE"][0] = str(args.montage)
     options["FONTSIZE"][0] = str(args.fontsize)
     options["IMAGESIZE"][0] = str(args.imagesize)
+    options["INTERACTIVE"][0] = str(args.interactive)
+    options["GZIP"][0] = str(args.gzip)
 
     print "Parameters:"
     for k,v in options.iteritems():
@@ -221,9 +238,22 @@ def find_cubes(options):
     # Find all the cube files in a given directory
     dir = options["CUBEDIR"][0]
     sorted_files = []
+    zipped_files = []
+
     for f in listdir(options["CUBEDIR"][0]):
-        if ".cube" in f:
+        if f[-5:] == '.cube':
             sorted_files.append(f)
+        elif f[-8:] == '.cube.gz':
+            found_zipped = True
+            # unzip file
+            sorted_files.append(f[:-3])
+            zipped_files.append(f)
+
+    if len(zipped_files) > 0:
+        print "\nDecompressing gzipped cube files"
+        FNULL = open(os.devnull, 'w')
+        subprocess.call(("gzip -d %s" % " ".join(zipped_files)),stdout=FNULL, shell=True)
+        options["GZIP"][0] = 'True'
 
     return sorted(sorted_files)
 
@@ -244,14 +274,25 @@ def write_and_run_vmd_script(options,cube_files):
 
         vmd_script_surface = multigsub(replacement_map,vmd_template_surface)
         vmd_script_head = multigsub(replacement_map,vmd_template)
-        vmd_script.write(vmd_script_head + "\n" + vmd_script_surface)
+        
+        if options["INTERACTIVE"][0] == 'True':
+            vmd_script_render = multigsub(replacement_map,vmd_template_interactive)
+        else:
+            vmd_script_render = multigsub(replacement_map,vmd_template_render)
 
-    vmd_script.write("quit")
-    vmd_script.close()
+        vmd_script.write(vmd_script_head + "\n" + vmd_script_surface + "\n" + vmd_script_render)
 
-    # Call VMD
-    FNULL = open(os.devnull, 'w')
-    subprocess.call(("%s -dispdev text -e %s" % (options["VMDPATH"][0],vmd_script_name)),stdout=FNULL, shell=True)
+    if options["INTERACTIVE"][0] == 'False':
+        vmd_script.write("quit")
+        vmd_script.close()
+        # Call VMD in text mode
+        FNULL = open(os.devnull, 'w')
+        subprocess.call(("%s -dispdev text -e %s" % (options["VMDPATH"][0],vmd_script_name)),stdout=FNULL, shell=True)
+    else:
+        vmd_script.close()
+        # Call VMD in graphic mode
+        FNULL = open(os.devnull, 'w')
+        subprocess.call(("%s -e %s" % (options["VMDPATH"][0],vmd_script_name)),stdout=FNULL, shell=True)
 
 
 def call_montage(options,cube_files):
@@ -304,6 +345,14 @@ def call_montage(options,cube_files):
                 subprocess.call(("%s %s -geometry +2+2 BasisFunctions.tga" % (montage_exe," ".join(basis_functions))), shell=True)
 
 
+def zip_files(cube_files,options):
+    """Gzip cube files if requested or necessary."""
+    if options["GZIP"][0] == 'True':
+        print "\nCompressing cube files"
+        FNULL = open(os.devnull, 'w')
+        subprocess.call(("gzip %s" % " ".join(cube_files)),stdout=FNULL, shell=True)
+
+
 def main(argv):
     find_vmd(options)
     read_options(options)
@@ -311,7 +360,7 @@ def main(argv):
     cube_files = find_cubes(options)
     write_and_run_vmd_script(options,cube_files)
     call_montage(options,cube_files)
-
+    zip_files(cube_files,options)
 
 if __name__ == '__main__':
     main(sys.argv)

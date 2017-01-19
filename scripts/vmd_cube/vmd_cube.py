@@ -60,6 +60,7 @@ scale by PARAM_SCALE
 axes location Off
 display projection Orthographic
 display depthcue off
+display resize PARAM_IMAGEW PARAM_IMAGEH
 color Display Background white"""
 
 
@@ -111,8 +112,10 @@ options = {"SURF1ID"    : [None,"Surface1 Color Id"],
            "CUBEDIR"    : [None,"Cubefile Directory"],
            "SCALE"      : [None,"Scaling Factor"],
            "MONTAGE"    : [None,"Montage"],
+           "LABEL_MOS"  : [None,"Label MOs"],
            "FONTSIZE"   : [None,"Font size"],
-           "IMAGESIZE"  : [None,"Image size"],
+           "IMAGEW"     : [None,"Image width"],
+           "IMAGEH"     : [None,"Image height"],
            "VMDPATH"    : [None,"VMD Path"],
            "INTERACTIVE": [None,"Interactive Mode"],
            "GZIP"       : [None,"Gzip Cube Files"]}
@@ -195,9 +198,15 @@ def read_options(options):
                    help='the scaling factor (float, default = 1.0)')
     parser.add_argument('--montage', const=True, default=False, nargs='?',
                    help='call montage to combine images. (string, default = false)')
+    parser.add_argument('--label_mos', const=True, default=True, nargs='?',
+                   help='call montage to combine images. (string, default = false)')
 
     parser.add_argument('--imagesize', metavar='<integer>', type=int, nargs='?',default=250,
                    help='the size of each image (integer, default = 250)')
+    parser.add_argument('--imagew', metavar='<integer>', type=int, nargs='?',default=250,
+                   help='the width of images (integer, default = 250)')
+    parser.add_argument('--imageh', metavar='<integer>', type=int, nargs='?',default=250,
+                   help='the height of images (integer, default = 250)')
     parser.add_argument('--fontsize', metavar='<integer>', type=int, nargs='?',default=20,
                    help='the font size (integer, default = 20)')
 
@@ -223,9 +232,11 @@ def read_options(options):
     options["TZ"][0] = str(args.tz)
     options["OPACITY"][0] = str(args.opacity)
     options["SCALE"][0] = str(args.scale)
+    options["LABEL_MOS"][0] = str(args.label_mos)
     options["MONTAGE"][0] = str(args.montage)
     options["FONTSIZE"][0] = str(args.fontsize)
-    options["IMAGESIZE"][0] = str(args.imagesize)
+    options["IMAGEW"][0] = str(args.imagew)
+    options["IMAGEH"][0] = str(args.imageh)
     options["INTERACTIVE"][0] = str(args.interactive)
     options["GZIP"][0] = str(args.gzip)
 
@@ -330,9 +341,9 @@ def call_montage(options,cube_files):
             # Add labels
             for f in sorted_mos[0]:
                 f_split = f.split('_')
-                label = "%s\ \(%s\)" % (f_split[3][:-4],f_split[2])
+                label = '%s\ \(%s\)' % (f_split[3][:-4],f_split[2])
                 subprocess.call(("montage -pointsize %s -label %s %s -geometry '%sx%s+0+0>' %s" %
-                    (options["FONTSIZE"][0],label,f,options["IMAGESIZE"][0],options["IMAGESIZE"][0],f)), shell=True)
+                    (options["FONTSIZE"][0],label,f,options["IMAGEW"][0],options["IMAGEH"][0],f)), shell=True)
 
             # Combine together in one image
             if len(alpha_mos) > 0:

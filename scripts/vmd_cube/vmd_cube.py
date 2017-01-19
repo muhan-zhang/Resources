@@ -196,7 +196,7 @@ def read_options(options):
 
     parser.add_argument('--scale', metavar='<factor>', type=float, nargs='?',default=1.0,
                    help='the scaling factor (float, default = 1.0)')
-    parser.add_argument('--montage', const=True, default=False, nargs='?',
+    parser.add_argument('--montage', const=True, default=True, nargs='?',
                    help='call montage to combine images. (string, default = false)')
     parser.add_argument('--label_mos', const=True, default=True, nargs='?',
                    help='call montage to combine images. (string, default = false)')
@@ -252,6 +252,14 @@ def find_cubes(options):
     zipped_files = []
 
     for f in listdir(options["CUBEDIR"][0]):
+        if "\'" in f:
+            nf = f.replace("\'", "p")
+            os.rename(f,nf)
+            f = nf
+        if "\"" in f:
+            nf = f.replace("\"", "pp")
+            os.rename(f,nf)
+            f = nf
         if f[-5:] == '.cube':
             sorted_files.append(f)
         elif f[-8:] == '.cube.gz':

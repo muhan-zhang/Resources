@@ -49,20 +49,20 @@ mol modcolor 0 PARAM_CUBENUM Element
 mol modstyle 0 PARAM_CUBENUM CPK 0.400000 0.40000 30.000000 16.000000
 
 # Define the material
-material change ambient Opaque 0.310000
-material change diffuse Opaque 0.720000
-material change specular Opaque 0.500000
-material change shininess Opaque 0.480000
-material change opacity Opaque 1.000000
-material change outline Opaque 0.000000
-material change outlinewidth Opaque 0.000000
-material change transmode Opaque 0.000000
-material change specular Opaque 0.750000
+# material change ambient Opaque 0.310000
+# material change diffuse Opaque 0.720000
+# material change specular Opaque 0.500000
+# material change shininess Opaque 0.480000
+# material change opacity Opaque 1.000000
+# material change outline Opaque 0.000000
+# material change outlinewidth Opaque 0.000000
+# material change transmode Opaque 0.000000
+# material change specular Opaque 0.750000
 
-material change ambient EdgyShiny 0.310000
-material change diffuse EdgyShiny 0.720000
+material change ambient   EdgyShiny 0.310000
+material change diffuse   EdgyShiny 0.720000
 material change shininess EdgyShiny 1.0000
-material change opacity EdgyShiny PARAM_OPACITY
+material change opacity   EdgyShiny PARAM_OPACITY
 
 # Customize atom colors
 color Element C silver
@@ -235,6 +235,14 @@ def read_options(options):
     parser.add_argument('--gzip', metavar='', const=True, default=False, nargs='?',
                    help='gzip cube files (default = false)')
 
+    parser.add_argument('--national_scheme', const=True, default=False, nargs='?',
+                   help='use a soft red/blue color scheme. (string, default = false)')
+    parser.add_argument('--silver_scheme', const=True, default=False, nargs='?',
+                   help='use a gray/white color scheme. (string, default = false)')
+    parser.add_argument('--bright_scheme', const=True, default=False, nargs='?',
+                   help='use a soft yellow/blue color scheme. (string, default = false)')
+    parser.add_argument('--electron_scheme', const=True, default=False, nargs='?',
+                   help='use a purple/green color scheme. (string, default = false)')
 
     args = parser.parse_args()
 
@@ -258,6 +266,22 @@ def read_options(options):
     options["IMAGEH"][0] = str(args.imageh)
     options["INTERACTIVE"][0] = str(args.interactive)
     options["GZIP"][0] = str(args.gzip)
+
+    if args.national_scheme:
+        options["SURF1ID"][0] = '23'
+        options["SURF2ID"][0] = '30'
+
+    if args.silver_scheme:
+        options["SURF1ID"][0] = '2'
+        options["SURF2ID"][0] = '8'
+
+    if args.electron_scheme:
+        options["SURF1ID"][0] = '13'
+        options["SURF2ID"][0] = '12'
+
+    if args.bright_scheme:
+        options["SURF1ID"][0] = '32'
+        options["SURF2ID"][0] = '22'
 
     print "Parameters:"
     sorted_parameters = sorted(options.keys())

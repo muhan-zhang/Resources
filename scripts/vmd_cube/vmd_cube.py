@@ -198,7 +198,7 @@ def read_options(options):
                    help='the scaling factor (float, default = 1.0)')
     parser.add_argument('--montage', const=True, default=True, nargs='?',
                    help='call montage to combine images. (string, default = false)')
-    parser.add_argument('--label_mos', const=True, default=True, nargs='?',
+    parser.add_argument('--label_mos', const=True, default=False, nargs='?',
                    help='call montage to combine images. (string, default = false)')
 
     parser.add_argument('--imagesize', metavar='<integer>', type=int, nargs='?',default=250,
@@ -241,9 +241,9 @@ def read_options(options):
     options["GZIP"][0] = str(args.gzip)
 
     print "Parameters:"
-    for k,v in options.iteritems():
-        print "  %-20s %s" % (v[1],v[0])
-
+    sorted_parameters = sorted(options.keys())
+    for k in sorted_parameters:
+        print "  %-20s %s" % (options[k][1],options[k][0])
 
 def find_cubes(options):
     # Find all the cube files in a given directory
@@ -347,11 +347,12 @@ def call_montage(options,cube_files):
             os.chdir(options["CUBEDIR"][0])
                     
             # Add labels
-            for f in sorted_mos[0]:
-                f_split = f.split('_')
-                label = '%s\ \(%s\)' % (f_split[3][:-4],f_split[2])
-                subprocess.call(("montage -pointsize %s -label %s %s -geometry '%sx%s+0+0>' %s" %
-                    (options["FONTSIZE"][0],label,f,options["IMAGEW"][0],options["IMAGEH"][0],f)), shell=True)
+            if options["LABEL_MOS"][0] == 'True':
+                for f in sorted_mos[0]:
+                    f_split = f.split('_')
+                    label = '%s\ \(%s\)' % (f_split[3][:-4],f_split[2])
+                    subprocess.call(("montage -pointsize %s -label %s %s -geometry '%sx%s+0+0>' %s" %
+                        (options["FONTSIZE"][0],label,f,options["IMAGEW"][0],options["IMAGEH"][0],f)), shell=True)
 
             # Combine together in one image
             if len(alpha_mos) > 0:

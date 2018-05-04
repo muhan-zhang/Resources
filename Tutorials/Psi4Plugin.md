@@ -112,7 +112,7 @@ In the next step we generate antisymmetrized two-electron integrals in physicist
     }
 ```
 
-We then read the Hartree-Fock orbital energies and store them in the vector `epsilon` using the ordering of the spin orbitals. Depending on spin we read either the alpha or beta orbital energies
+We then read the Hartree-Fock orbital energies and store them in the vector `epsilon` using the ordering of the spin orbitals. Depending on spin we read either the alpha or beta orbital energies.
 ```c++
     // 3. Get the orbital energies from the reference wave function
     SharedVector epsilon_a = ref_wfn->epsilon_a();
@@ -127,6 +127,10 @@ We then read the Hartree-Fock orbital energies and store them in the vector `eps
             epsilon[p] = epsilon_b->get(p_orb);
         }
     }
+```
+This code will not compile unless you add the following `#include` at the beginning your file that defines the interface of the `Vector` class
+```c++
+#include "psi4/libmints/vector.h"
 ```
 
 In the last step we define lists of occupied and virtual orbitals that will be useful when we loop over orbitals. We can then go ahead and compute the MP2 energy with a very clean couple of lines of code:

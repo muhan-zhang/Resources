@@ -54,3 +54,15 @@ inline void PRINT_ELEMENTS(const T &coll, const std::string &optcstr = "",
     std::cout << std::endl;
 }
 ```
+
+```
+// INSERT_ELEMENTS (collection, first, last)
+// - fill values from first to last into the collection
+// - NOTE: NO half-open range
+template <typename T>
+inline void INSERT_ELEMENTS(T &coll, int first, int last) {
+  for (int i = first; i <= last; ++i) {
+    coll.insert(coll.end(), i);
+  }
+}
+```

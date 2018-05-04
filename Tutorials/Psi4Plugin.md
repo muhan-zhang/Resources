@@ -12,4 +12,4 @@ Next, change directory and generate the CMake command to compile the plugin
 > psi4 --plugin-compile
 cmake -C /Users/fevange/anaconda3/envs/p4env/share/cmake/psi4/psi4PluginCache.cmake -DCMAKE_PREFIX_PATH=/Users/fevange/anaconda3/envs/p4env .
 ```
-
+and execute the command `cmake -C ...` to compile the plugin.

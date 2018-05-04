@@ -195,6 +195,8 @@ If all goes well you should get the following result
     MP2 total energy             -74.976103565741
 ```
 
+You can find the complete .cc file here [Resources/Tutorials/Psi4Programming/SOMP2/mointegrals.cc]
+
 The following helper functions can help you fill and print vectors and other STL containers
 
 ```

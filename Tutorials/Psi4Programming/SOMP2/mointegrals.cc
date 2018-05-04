@@ -28,7 +28,7 @@
  * @END LICENSE
  */
 #include "psi4/libdpd/dpd.h"
-#include "psi4/libmints/vector.h"
+#include "psi4/libmints/vector.h" // <- needed to access SharedVector
 #include "psi4/libmints/wavefunction.h"
 #include "psi4/liboptions/liboptions.h"
 #include "psi4/libpsi4util/PsiOutStream.h"
@@ -40,38 +40,6 @@
 
 // This allows us to be lazy in getting the spaces in DPD calls
 #define ID(x) ints.DPD_ID(x)
-
-// INSERT_ELEMENTS (collection, first, last)
-// - fill values from first to last into the collection
-// - NOTE: NO half-open range
-template <typename T> inline void INSERT_ELEMENTS(T& coll, int first, int last) {
-    for (int i = first; i < last; ++i) {
-        coll.insert(coll.end(), i);
-    }
-}
-
-// PRINT_ELEMENTS()
-// - prints optional string optcstr followed by
-// - all elements of the collection coll
-// - separated by spaces
-template <typename T>
-inline void PRINT_ELEMENTS(const T& coll, const std::string& optcstr = "")
-//               std::function<std::string(const T&)> predicate)
-{
-    std::cout << optcstr << "[";
-    bool notfirst = false;
-    for (auto elem : coll) {
-        if (notfirst) {
-            std::cout << ',' << elem;
-        } else {
-            std::cout << elem;
-            notfirst = true;
-        }
-    }
-    std::cout << "]";
-    //  if (el)
-    //    std::cout << std::endl;
-}
 
 namespace psi {
 namespace mp2so_plug {

@@ -195,9 +195,9 @@ If all goes well you should get the following result
     MP2 total energy             -74.976103565741
 ```
 
-You can find the complete .cc file here [Resources/Tutorials/Psi4Programming/SOMP2/mointegrals.cc]
+You can find the complete `mointegrals.cc` file [here](Resources/Tutorials/Psi4Programming/SOMP2/mointegrals.cc)
 
-The following helper functions can help you fill and print vectors and other STL containers
+The following functions can help you fill and print vectors and other STL containers
 
 ```
 // PRINT_ELEMENTS()
@@ -205,8 +205,7 @@ The following helper functions can help you fill and print vectors and other STL
 // - all elements of the collection coll
 // - separated by spaces
 template <typename T>
-inline void PRINT_ELEMENTS(const T &coll, const std::string &optcstr = "",
-                           bool el = false) {
+inline void PRINT_ELEMENTS(const T &coll, const std::string &optcstr = "") {
   std::cout << optcstr << "[";
   bool notfirst = false;
   for (auto elem : coll) {
@@ -217,9 +216,7 @@ inline void PRINT_ELEMENTS(const T &coll, const std::string &optcstr = "",
       notfirst = true;
     }
   }
-  std::cout << "]";
-  if (el)
-    std::cout << std::endl;
+  std::cout << "]" << std::endl;
 }
 ```
 

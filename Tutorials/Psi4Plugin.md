@@ -112,6 +112,87 @@ In the next step we generate antisymmetrized two-electron integrals in physicist
     }
 ```
 
+We then read the Hartree-Fock orbital energies and store them in the vector `epsilon` using the ordering of the spin orbitals. Depending on spin we read either the alpha or beta orbital energies
+```c++
+    // 3. Get the orbital energies from the reference wave function
+    SharedVector epsilon_a = ref_wfn->epsilon_a();
+    SharedVector epsilon_b = ref_wfn->epsilon_b();    
+    std::vector<double> epsilon(nso, 0.0);
+    for (size_t p = 0; p < nso; p++) {
+        size_t p_orb = so_labels[p].first;
+        size_t p_spin = so_labels[p].first;
+        if (p_spin == 0){
+            epsilon[p] = epsilon_a->get(p_orb);
+        }else{
+            epsilon[p] = epsilon_b->get(p_orb);
+        }
+    }
+```
+
+In the last step we define lists of occupied and virtual orbitals that will be useful when we loop over orbitals. We can then go ahead and compute the MP2 energy with a very clean couple of lines of code:
+```c++
+    // 4. Form list of occupied and virtual orbitals and compute the MP2 energy
+    int na = ref_wfn->nalpha();
+    int nb = ref_wfn->nbeta();
+    int nocc = na + nb;
+    // ASSUMES RESTRICTED ORBITALS
+
+    std::vector<size_t> O;
+    std::vector<size_t> V;
+
+    for (int i = 0; i < nocc; i++) {
+        O.push_back(i);
+    }
+    for (int a = nocc; a < nso; a++) {
+        V.push_back(a);
+    }
+
+    double mp2_energy = 0.0;
+    for (int i : O) {
+        for (int j : O) {
+            for (int a : V) {
+                for (int b : V) {
+                    double Vijab = so_ints[four_idx(i, j, a, b, nso)];
+                    double Dijab = epsilon[i] + epsilon[j] - epsilon[a] - epsilon[b];
+                    mp2_energy += 0.25 * Vijab * Vijab / Dijab;
+                }
+            }
+        }
+    }
+
+    double rhf_energy = ref_wfn->reference_energy();
+
+    outfile->Printf("\n\n    ==> Spin orbital MP2 energy <==\n");
+    outfile->Printf("    RHF total energy         %20.12f\n", rhf_energy);
+    outfile->Printf("    MP2 correlation energy   %20.12f\n", mp2_energy);
+    outfile->Printf("    MP2 total energy         %20.12f\n", rhf_energy + mp2_energy);
+
+    Process::environment.globals["CURRENT ENERGY"] = rhf_energy + mp2_energy;
+```
+
+Since we did not handle symmetry this code works only in C1 symmetry. Remember to run it with the `symmetry c1` keyword in your input as
+```
+molecule {
+O
+H 1 R
+H 1 R 2 A
+
+R = .9
+A = 104.5
+symmetry c1
+}
+```
+
+If all goes well you should get the following result
+```
+    ==> Spin orbital MP2 energy <==
+    RHF total energy             -74.945021010538
+    MP2 correlation energy        -0.031082555203
+    MP2 total energy             -74.976103565741
+```
+
+The following helper functions can help you fill and print vectors and other STL containers
+
 ```
 // PRINT_ELEMENTS()
 // - prints optional string optcstr followed by
@@ -158,7 +239,7 @@ inline void PRINT_MAPPED_ELEMENTS(const T &coll,
 // - NOTE: NO half-open range
 template <typename T>
 inline void INSERT_ELEMENTS(T &coll, int first, int last) {
-  for (int i = first; i <= last; ++i) {
+  for (int i = first; i < last; ++i) {
     coll.insert(coll.end(), i);
   }
 }

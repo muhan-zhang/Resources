@@ -68,6 +68,7 @@ In the first step we will read the integrals from disk and store them in chemist
     psio->close(PSIF_LIBTRANS_DPD, PSIO_OPEN_OLD);
 ```
 
+In the next step we generate antisymmetrized two-electron integrals in physicist notation `<pq||rs> = <pq|rs> - <pq|sr>`. We do this by first defining the ordering of the spin orbitals. We then loop over all spin orbitals p,q,r,s and build the antisymmetrized integrals.
 ```c++
     // 2. Build the antisymmetrized two-electron integrals in a spin orbital basis
     size_t nso = 2 * nmo;

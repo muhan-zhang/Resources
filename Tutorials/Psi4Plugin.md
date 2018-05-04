@@ -29,3 +29,28 @@ and execute the command `cmake -C ...` to compile the plugin.
         return (p * dim3 + q * dim2 + r * dim + s);
     };
 ```
+
+
+```
+// PRINT_ELEMENTS()
+// - prints optional string optcstr followed by
+// - all elements of the collection coll
+// - separated by spaces
+template <typename T>
+inline void PRINT_ELEMENTS(const T &coll, const std::string &optcstr = "",
+                           bool el = false) {
+  std::cout << optcstr << "[";
+  bool notfirst = false;
+  for (auto elem : coll) {
+    if (notfirst) {
+      std::cout << ',' << elem;
+    } else {
+      std::cout << elem;
+      notfirst = true;
+    }
+  }
+  std::cout << "]";
+  if (el)
+    std::cout << std::endl;
+}
+```

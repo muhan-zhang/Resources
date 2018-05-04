@@ -17,17 +17,45 @@ and execute the command `cmake -C ...` to compile the plugin.
 1. Get number of molecular integrals from the `ref_wfn` object:
 
 ```c++
-    // Allocate a vector of size nmo^4
+    // 1. Read and store the two-electron integrals in chemist notation (pq|rs)
+    // allocate a vector of size nmo^4
     size_t nmo = ref_wfn->nmo();
     size_t nmo4 = nmo * nmo * nmo * nmo;
-    std::vector<double> mo_ints(nmo4);
-    
-    auto four_idx = [&](size_t p, size_t q, size_t r, size_t s,
-                      size_t dim) -> size_t {
+    std::vector<double> mo_ints(nmo4, 0.0);
+
+    // function to address a four-dimensional tensor of dimension dim * dim * dim * dim
+    auto four_idx = [&](size_t p, size_t q, size_t r, size_t s, size_t dim) -> size_t {
         size_t dim2 = dim * dim;
         size_t dim3 = dim2 * dim;
         return (p * dim3 + q * dim2 + r * dim + s);
     };
+
+    // read the integrals
+    for (int h = 0; h < nirrep; ++h) {
+        global_dpd_->buf4_mat_irrep_init(&K, h);
+        global_dpd_->buf4_mat_irrep_rd(&K, h);
+        for (int pq = 0; pq < K.params->rowtot[h]; ++pq) {
+            int p = K.params->roworb[h][pq][0];
+            int q = K.params->roworb[h][pq][1];
+            int psym = K.params->psym[p];
+            int qsym = K.params->qsym[q];
+            int prel = p - K.params->poff[psym];
+            int qrel = q - K.params->qoff[qsym];
+            for (int rs = 0; rs < K.params->coltot[h]; ++rs) {
+                int r = K.params->colorb[h][rs][0];
+                int s = K.params->colorb[h][rs][1];
+                int rsym = K.params->rsym[r];
+                int ssym = K.params->ssym[s];
+                int rrel = r - K.params->roff[rsym];
+                int srel = s - K.params->soff[ssym];
+                // store the integrals
+                mo_ints[four_idx(p, q, r, s, nmo)] = K.matrix[h][pq][rs];
+            }
+        }
+        global_dpd_->buf4_mat_irrep_close(&K, h);
+    }
+    global_dpd_->buf4_close(&K);
+    psio->close(PSIF_LIBTRANS_DPD, PSIO_OPEN_OLD);
 ```
 
 

@@ -1,1 +1,4 @@
-psi4 --plugin-name mp2so_plug --plugin-template mointegrals
+`psi4 --plugin-name mp2so_plug --plugin-template mointegrals`
+
+`cd mp2so_plug`
+

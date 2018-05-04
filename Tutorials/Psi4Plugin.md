@@ -13,3 +13,19 @@ Next, change directory and generate the CMake command to compile the plugin
 cmake -C /Users/fevange/anaconda3/envs/p4env/share/cmake/psi4/psi4PluginCache.cmake -DCMAKE_PREFIX_PATH=/Users/fevange/anaconda3/envs/p4env .
 ```
 and execute the command `cmake -C ...` to compile the plugin.
+
+1. Get number of molecular integrals from the `ref_wfn` object:
+
+```c++
+    // Allocate a vector of size nmo^4
+    size_t nmo = ref_wfn->nmo();
+    size_t nmo4 = nmo * nmo * nmo * nmo;
+    std::vector<double> mo_ints(nmo4);
+    
+    auto four_idx = [&](size_t p, size_t q, size_t r, size_t s,
+                      size_t dim) -> size_t {
+        size_t dim2 = dim * dim;
+        size_t dim3 = dim2 * dim;
+        return (p * dim3 + q * dim2 + r * dim + s);
+    };
+```

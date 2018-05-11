@@ -17,6 +17,8 @@
   15. `git remote add origin <server>` Connects repository to a remote server
   16. `git diff` View all local changes relative to remote
   17. `git rm` Removes a tracked file
+  18. `git remote -v` Shows identity of origin and other remotes
+  19. `git remote add upstream <parent repo>` Adds upstream remote for a parent repo
 
 
 ## Making a new repo
@@ -28,3 +30,16 @@
 6. Commit change, enter message, close file: `git commit -a`
 7. See your new history!: `git log`
 8. Push your changes to your repo on github.com: `git push origin master`
+
+## Making a fork
+### Good practice for making changes to shared code
+1. On a parent repo page in github.com, click Fork on the top right.
+2. Clone to local machine: `git clone <your fork>`
+3. Setup upstream: `git remote add upstream <parent repository>`
+4. Make a branch of your fork: `git checkout -b new_branch` (branch name should be descriptive of changes)
+5. Make some local change: `vi new_file.dat`
+6. Add and commit change: `git add new_file.dat`, `git commit -m "Add new file"`
+7. Push changes: `git push origin new_branch` (this will create a new branch on github.com)
+8. On your fork on github.com, create a pull request pushing the "Compare & pull request" button.
+9. Open the pull request by by writing a description and clicking "Create pull request"
+10. Delete branch once PR is merged

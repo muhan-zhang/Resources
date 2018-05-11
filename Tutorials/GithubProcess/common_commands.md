@@ -39,6 +39,7 @@
 4. Make a branch of your fork: `git checkout -b new_branch` (branch name should be descriptive of changes)
 5. Make some local change: `vi new_file.dat`
 6. Add and commit change: `git add new_file.dat`, `git commit -m "Add new file"`
+6.5 Rebase to resolve any merge conflicts: `git pull --rebase upstream master`
 7. Push changes: `git push origin new_branch` (this will create a new branch on github.com)
 8. On your fork on github.com, create a pull request pushing the "Compare & pull request" button.
 9. Open the pull request by by writing a description and clicking "Create pull request"

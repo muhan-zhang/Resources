@@ -16,3 +16,15 @@
   14. `git init` Create a new git repository
   15. `git remote add origin <server>` Connects repository to a remote server
   16. `git diff` View all local changes relative to remote
+  17. `git rm` Removes a tracked file
+
+
+## Making a new repo
+1. First make repo on github
+2. `git clone` your new repo locally.
+3. Make some new file, `file.dat`
+4. See your new untracked file: `git status`
+5. Stage file for commit: `git add file.dat`
+6. Commit change, enter message, close file: `git commit -a`
+7. See your new history!: `git log`
+8. Push your changes to your repo on github.com: `git push origin master`

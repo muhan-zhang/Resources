@@ -40,6 +40,8 @@
 5. Make some local change: `vi new_file.dat`
 6. Add and commit change: `git add new_file.dat`, `git commit -m "Add new file"`
 6.5 Rebase to resolve any merge conflicts: `git pull --rebase upstream master`
+6.5.1 If your local branch differs from origin, you will need to make your changes and then push with force:
+`git push --force origin new_branch`
 7. Push changes: `git push origin new_branch` (this will create a new branch on github.com)
 8. On your fork on github.com, create a pull request pushing the "Compare & pull request" button.
 9. Open the pull request by by writing a description and clicking "Create pull request"

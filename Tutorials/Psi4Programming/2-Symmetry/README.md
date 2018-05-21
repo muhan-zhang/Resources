@@ -1,4 +1,4 @@
-In this tutorial we will introduce how to use integrals from psi4.
+In this tutorial we will introduce how to adapt symmetry in the so-mp2 code.
 
 Symmetry in orbitals:
 ```

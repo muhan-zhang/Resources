@@ -120,7 +120,7 @@ We then read the Hartree-Fock orbital energies and store them in the vector `eps
     std::vector<double> epsilon(nso, 0.0);
     for (size_t p = 0; p < nso; p++) {
         size_t p_orb = so_labels[p].first;
-        size_t p_spin = so_labels[p].first;
+        size_t p_spin = so_labels[p].second;
         if (p_spin == 0){
             epsilon[p] = epsilon_a->get(p_orb);
         }else{

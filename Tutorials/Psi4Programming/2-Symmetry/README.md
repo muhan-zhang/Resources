@@ -13,20 +13,20 @@ C2v:a1[1,1,0,0];
 ```
 
 In order to handle the symmetry, we need to know the total number of MO and occupation number in each irrep.
-```
+```c++
     Dimension noccpi = ref_wfn->doccpi();
     Dimension nmopi = ref_wfn->nmopi();
 ```
 
 Declairation of occupied and virtual indicies and orbital energies:
-```
+```c++
     std::vector<double> epsilon(nso, 0.0); 
     std::vector<size_t> O; // list of occupied mos (in so basis)
     std::vector<size_t> V; // list of virtual mos (in so basis)
 ```
 
 Loop over irreps for orbital energies:
-``` 
+``` c++
     size_t offset = 0;
     for (int h = 0; h < nirrep; ++h) {
         size_t nocc_h = 2 * noccpi[h];

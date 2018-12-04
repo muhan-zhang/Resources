@@ -1,5 +1,9 @@
 # ForteCon2018
 
+## Pre-con assignment
+- Talk
+- Articles
+
 ## Schedule
 
 ### Day 1 morning (10-12)

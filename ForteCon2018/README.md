@@ -12,6 +12,7 @@
   
 - Best practices: beginner (Jeff)
   + clang-format
+  + namespaces
   + Forte style
   + reference vs. pointer vs. smart pointer
   + const/auto

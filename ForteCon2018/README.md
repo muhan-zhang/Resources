@@ -16,6 +16,7 @@
   + Forte style
   + reference vs. pointer vs. smart pointer
   + const/auto
+  + basic efficency and storage practices
 
 ### Day 1 afternoon (1-4)
 

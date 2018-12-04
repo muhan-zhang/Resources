@@ -38,6 +38,6 @@
 - Infrastructure work
 - Localizer
 
-### Day 3 morning (1-4)
+### Day 3
 
 - Forte as a module and new driver

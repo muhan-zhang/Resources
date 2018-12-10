@@ -1,7 +1,8 @@
 # ForteCon2018
 
 ## Pre-con assignment
-- Talk
+- Talk \
+Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiLXUC8
 - Articles
 
 ## Schedule

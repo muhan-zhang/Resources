@@ -53,5 +53,6 @@ Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiL
 - Forte as a module and new driver
 
 ## Extended reading
-- Class diagram https://en.wikipedia.org/wiki/Class_diagram
+- UML Class diagram https://en.wikipedia.org/wiki/Class_diagram
 - Code Complete https://proquest-safaribooksonline-com.proxy.library.emory.edu/book/software-engineering-and-development/0735619670
+- SOLID principles of object-oriented programming https://en.wikipedia.org/wiki/SOLID

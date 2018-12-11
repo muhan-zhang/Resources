@@ -47,3 +47,6 @@ Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiL
 ### Day 3
 
 - Forte as a module and new driver
+
+## Extended reading
+- Class diagram https://en.wikipedia.org/wiki/Class_diagram

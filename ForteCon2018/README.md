@@ -32,6 +32,9 @@ Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiL
 - Best practices: intermediate (Sam)
   + classes in Forte
   + when to use object oriented programming?
+  + constructor and destructor
+  + defensive programming
+  + design pattern
   + Psi4 objects vs. Forte objects
 
 - C++11-17 and pybind11 (Francesco)
@@ -43,6 +46,7 @@ Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiL
 
 - Infrastructure work
 - Localizer
+- Design forte info container
 
 ### Day 3
 
@@ -50,3 +54,4 @@ Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiL
 
 ## Extended reading
 - Class diagram https://en.wikipedia.org/wiki/Class_diagram
+- Code Complete https://proquest-safaribooksonline-com.proxy.library.emory.edu/book/software-engineering-and-development/0735619670

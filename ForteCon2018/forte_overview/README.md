@@ -14,7 +14,8 @@ Besides, the above command also provides us `doc.rst`, `plugin.cc`, `CMakeLists.
 #### 1. Treat `input.dat` as a python script.
 Let us first quickly go through the input file.
 
-```sys.path.insert(0, './..')
+```
+sys.path.insert(0, './..')
 import my_mp2
 ```
 The first line will insert the directory that contains `my_mp2` to the beginning of sys.path (a list of strings that specifies the search path for modules) so that we can import `my_mp2`.

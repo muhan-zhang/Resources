@@ -80,8 +80,56 @@ Some of the most important folders in forte:
 ### Code Execution
 
 I won't repeat myself here as I explain in the "Psi4 Plugin" section.
+
 One thing I need to point out is that the `pymodule.py` of forte is different from the above `my_mp2` example.
 Forte will look for `ref_wfn` and if it is not found, it will run a SCF computation and use the SCF wavefunction.
 Thus, the correct way to run forte is to do either the following: `energy("forte")` or `E, wfn = energy('xxx') energy('forte', ref_wfn=wfn)` where "xxx" could be "scf" or "casscf" or even "forte".
 
+### Current Methods in Forte
+
+Here are some important methods and helper classes that you may use regularly.
+
+Major methods:
+- adaptive configuration interaction/self-consistent field (ACI/ACI-SCF)
+- projective configuration interaction (PCI)
+- full configuraton interaction (FCI)
+- complete active space self-consistent field (CASSCF)
+- single-reference/multireference driven similarity renormalization group (SR/MR-DSRG)
+
+Other methods (under development/not fully tested)
+- coupled-cluster singles and doubles
+- other selective CAS methods: VCIS, VCISD, DOCI
+- uncontracted multireference perturbation theory / configuration interaction
+- finite-temperature Hartree-Fock
+- density matrix renormalization group
+
+Some helpers:
+- Integral class: conventional two-electron integrals, density fitting, Cholesky decomposition, user defined
+- Reference class: holds the density matrices/cumulants
+- orbital modification: localizer, semicanonical, mp2-no, cis-no, avas, orbital optimizer
+- Davidson-Liu solver
+- Determinant class
+- Hashvector template library
+- V2RDM: an interface to read V2RDM dumped density files
+
+*Since there are so many methods in Forte, we use `JOB_TYPE` option to handle what method should be run.*
+
+Quiz: where to look for the way how each method is excecuted? Hint: `grep` is your friend.
+
 ### Add New Features to Forte / Connection to Psi4
+Let us first see an example of existing feature, the CASSCF class.
+Let us answer the following questions:
+- What should CASSCF do? Decide what to be exposed to the public.
+    - compute energy
+    - optimize orbitals
+    - compute RDMs
+- Create a CASSCF class.
+    - include guard
+    - namespace
+    - derived from Psi4 Wavefunction
+    - use Psi4 functionalities: Matrix, Vector, Dimension, JK, etc.
+- Are there any options that user can tune the CASSCF procedure? Where should those options go?
+- In which file should we create the CASSCF object and call the compute_energy function (under current convention)?
+- One last thing: change CMakeLists.txt!
+
+**Before implementing anything useful (filling the details of a class), just write the constructor and see if the class compiles and runs!**

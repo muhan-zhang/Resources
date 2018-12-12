@@ -96,7 +96,7 @@ Major methods:
 - complete active space self-consistent field (CASSCF)
 - single-reference/multireference driven similarity renormalization group (SR/MR-DSRG)
 
-Other methods (under development/not fully tested)
+Other methods (not commonly used/under development/not fully tested)
 - coupled-cluster singles and doubles
 - other selective CAS methods: VCIS, VCISD, DOCI
 - uncontracted multireference perturbation theory / configuration interaction

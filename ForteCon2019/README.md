@@ -1,6 +1,23 @@
 # ForteCon and QForteCon 2019
 
+## Goals for ForteCon
+- [ ] Use integrals read from python, disk, or other programs
+- [ ] Tutorials: write a FCI code in python using the determinant class (symmetry, determinants, integrals)
+- [ ] Tutorials: write a DSRG-MRPT2 code in numpy (need to write interface, numpy)
+- [ ] Get rid of `reference` and other warnings
+- [ ] Conda package for Forte and QForte
+- [ ] Web page
+
+## Goals for QForteCon
+- [ ] Eliminate the OpenFermion dependency (need Psi4 api)
+- [ ] Code coverage
+- [ ] Online documentation for python API
+- [ ] Tests and tutorials
+- [ ] Web page
+
 ## Pre-con assignment
+- [ ] Fix TravisCI
+- [ ] Write interface for DSRG-MRPT2 code
 - Talk \
 Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiLXUC8
 - Articles

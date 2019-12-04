@@ -1,4 +1,4 @@
-# ForteCon2018
+# ForteCon and QForteCon 2019
 
 ## Pre-con assignment
 - Talk \

@@ -24,50 +24,39 @@ Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiL
 
 ## Schedule
 
-### Day 1 morning (10-12)
+### Day 1 morning (9-12)
 
-- Overview of Forte (York)
+- Overview of Forte
   + folder stucture
   + code execution
   + interface with Psi4
-  + adding features to Forte
+  + Forte python API
+
+- FCI Tutorial
+  + determinants
+  + integrals
+  + setting up the FCI determinants
+  + forming and diagonalizing H
+  + assignment DOCI, CC?  
   
-- Best practices: beginner (Jeff)
-  + clang-format
-  + namespaces
-  + Forte style
-  + reference vs. pointer vs. smart pointer
-  + const/auto
-  + basic efficency and storage practices
+### Day 1 afternoon (1-3:30)
 
-### Day 1 afternoon (1-4)
+- QForte tutorial
 
-- Easy forte fixes
+### Day 2 morning (9-11:30)
 
-### Day 2 morning (10-12)
+- DSRG-MRPT2 tutorial (part I)
+  + ???
+  
+### Day 2 afternoon (1:30-4)
 
-- Best practices: intermediate (Sam)
-  + classes in Forte
-  + when to use object oriented programming?
-  + constructor and destructor
-  + defensive programming
-  + design pattern
-  + Psi4 objects vs. Forte objects
-
-- C++11-17 and pybind11 (Francesco)
-  + modern C++ style
-  + new features in C++17
-  + new STL functionality
-
-### Day 2 afternoon (1-4)
-
-- Infrastructure work
-- Localizer
-- Design forte info container
+- DSRG-MRPT2 tutorial (part II)
 
 ### Day 3
 
-- Forte as a module and new driver
+- Coding sessions
+ + goal 1
+ + goal 2
 
 ## Extended reading
 - UML Class diagram https://en.wikipedia.org/wiki/Class_diagram

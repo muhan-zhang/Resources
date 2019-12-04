@@ -10,7 +10,12 @@ std::tuple<int, int, int> mytuple(int i) {
 
 int main(int, char**) {
   // access the variables in a tuple (copy)
+
+//  int i, j, k; // why do I have to expose these?
+//  std::tie(i, j, k) = mytuple(10);
   auto[i, j, k] = mytuple(10);
+
+  // ...
 
   std::cout << "i = " << i << ", j = " << j << ", k = " << k << std::endl;
 

@@ -18,9 +18,12 @@ int main(int, char **) {
   }
 
   // in C++17
-  if (auto a = myfunc(4); a > 10) {
-    std::cout << "\na = " << a << std::endl;
+  if (auto b = myfunc(4); b > 10) {
+    std::cout << "\nb = " << b << std::endl;
   }
+
+  a += 10;
+  // b += 10; does not compile
 
   return 0;
 }

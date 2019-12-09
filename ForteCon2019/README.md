@@ -62,6 +62,12 @@ Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiL
 
 - TensorFlow tutorial
 
+## Task list
+### Psi4
+- [ ] fix the issue with `mints.one_electron_integrals()` when changing molecule/basis
+
+
+
 ## Extended reading
 - UML Class diagram https://en.wikipedia.org/wiki/Class_diagram
 - Code Complete https://proquest-safaribooksonline-com.proxy.library.emory.edu/book/software-engineering-and-development/0735619670

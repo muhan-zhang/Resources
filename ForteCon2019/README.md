@@ -66,6 +66,9 @@ Object-oriented Programming in 7 minutes https://www.youtube.com/watch?v=pTB0EiL
 ### Psi4
 - [ ] fix the issue with `mints.one_electron_integrals()` when changing molecule/basis
 
+### Forte
+- [ ] Pass forte_options to `ints = forte.make_forte_integrals(wfn, options, mo_space_info)`
+
 
 
 ## Extended reading
